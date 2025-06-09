@@ -1,0 +1,21 @@
+#!/bin/csh
+set verbose
+
+all.deleteout << eoi
+y
+eoi
+
+cases.runaa
+
+sectwd.runaa
+
+gg05.runaa
+
+cases.diffaa
+
+sectwd.diffaa
+
+gg05.diffaa
+
+unset verbose
+

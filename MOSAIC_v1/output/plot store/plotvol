@@ -1,0 +1,51 @@
+# Model: Raoult's Law
+
+set size 1, 1
+set origin 0,0
+set multiplot
+
+set autoscale
+unset log
+unset label
+set xtic auto
+set ytic auto
+
+set xlabel "Dp (um)"
+set ylabel "Volume (um^3/cc)"
+
+set xrange [0.008:1.0]
+set yrange [0:1]
+
+set logscale x
+
+# Upper Left
+set size 0.5, 0.5
+set origin 0.0, 0.5
+# 32 min
+set title "time = 0 h"
+plot "soa.aer.0h.txt" using 2:4 title 'observed' with lines 3
+
+
+# Upper Right
+set size 0.5, 0.5
+set origin 0.5, 0.5
+# 128 min
+set title "time = 1 h"
+plot "soa.aer.1h.txt" using 2:4 title 'observed' with lines 3
+
+# Lower Left
+set size 0.5, 0.5
+set origin 0.0, 0.0
+# 256 min
+set title "time = 12 h"
+plot "soa.aer.12h.txt" using 2:4 title 'observed' with lines 3
+
+
+# Lower Right
+set size 0.5, 0.5
+set origin 0.5, 0.0
+# 512 min
+set title "time = 48 h"
+plot "soa.aer.48h.txt" using 2:4 title 'observed' with lines 3
+
+unset multiplot

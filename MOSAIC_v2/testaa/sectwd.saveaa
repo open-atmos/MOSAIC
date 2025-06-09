@@ -1,0 +1,43 @@
+# sectwd.save
+set verbose
+
+ls -d sectwd.sv*
+
+echo "Enter save directory name:"
+set savedir = $<
+
+mkdir $savedir
+
+/bin/cp -p sectw?.inp sectw??.inp sectd?.inp sectd??.inp $savedir
+
+/bin/cp -p sectw?.fullout.txt sectw??.fullout.txt sectd?.fullout.txt sectd??.fullout.txt $savedir
+
+/bin/cp -p fort.172w? fort.172w?? fort.172d? fort.172d?? $savedir
+
+ls -R $savedir
+
+unset verbose
+
+
+
+exit
+
+sectd2.inp
+sectd3.inp
+sectw1.inp
+sectw1b.inp
+sectw1c.inp
+sectw1d.inp
+sectw1e.inp
+sectw2.inp
+sectw2c.inp
+sectw3.inp
+sectw3c.inp
+sectw4.inp
+sectw5.inp
+sectw6.inp
+sectw6b.inp
+sectw6c.inp
+sectw6d.inp
+sectw6e.inp
+

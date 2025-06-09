@@ -1,0 +1,87 @@
+# Model: Raoult's Law
+
+set size 1, 1
+set origin 0,0
+set multiplot
+
+set autoscale
+unset log
+unset label
+set xtic auto
+set ytic auto
+
+set xlabel 'Dp (nm)}'
+set ylabel "Species Mole Fraction"
+
+set xrange [40:500]
+set yrange [0:1]
+
+set logscale x
+
+# Upper Left
+set size 0.5, 0.5
+set origin 0.0, 0.5
+# 32 min
+set title "time = 32 min (Model: Raoult's Law)"
+plot "rl_32min.wcoag.txt"	using ($4):($11/($10+$11+$12+$13+$14)) title "C* = 0.1" with lines, \
+     "rl_32min.wcoag.txt"	using ($4):($12/($10+$11+$12+$13+$14)) title "C* = 1" with lines,   \
+     "rl_32min.wcoag.txt"	using ($4):($13/($10+$11+$12+$13+$14)) title "C* = 100" with lines, \
+     "rl_32min.wcoag.txt"	using ($4):($14/($10+$11+$12+$13+$14)) title "C* = 1000" with lines
+
+#plot "rl_32min.wcoag.txt"	using 4:11 title "C* = 0.1" with lines, \
+#     "rl_32min.wcoag.txt"	using 4:12 title "C* = 1" with lines, \
+#     "rl_32min.wcoag.txt"	using 4:13 title "C* = 100" with lines, \
+#     "rl_32min.wcoag.txt"	using 4:14 title "C* = 1000" with lines
+
+
+# Upper Right
+set size 0.5, 0.5
+set origin 0.5, 0.5
+# 128 min
+set title "time = 128 min (Model: Raoult's Law)"
+plot "rl_128min.wcoag.txt"	using ($4):($11/($10+$11+$12+$13+$14)) title "C* = 0.1" with lines, \
+     "rl_128min.wcoag.txt"	using ($4):($12/($10+$11+$12+$13+$14)) title "C* = 1" with lines,   \
+     "rl_128min.wcoag.txt"	using ($4):($13/($10+$11+$12+$13+$14)) title "C* = 100" with lines, \
+     "rl_128min.wcoag.txt"	using ($4):($14/($10+$11+$12+$13+$14)) title "C* = 1000" with lines
+
+#plot "rl_128min.wcoag.txt"	using 4:11 title "C* = 0.1" with lines, \
+#     "rl_128min.wcoag.txt"	using 4:12 title "C* = 1" with lines, \
+#     "rl_128min.wcoag.txt"	using 4:13 title "C* = 100" with lines, \
+#     "rl_128min.wcoag.txt"	using 4:14 title "C* = 1000" with lines
+
+
+# Lower Left
+set size 0.5, 0.5
+set origin 0.0, 0.0
+# 256 min
+set title "time = 256 min (Model: Raoult's Law)"
+plot "rl_256min.wcoag.txt"	using ($4):($11/($10+$11+$12+$13+$14)) title "C* = 0.1" with lines, \
+     "rl_256min.wcoag.txt"	using ($4):($12/($10+$11+$12+$13+$14)) title "C* = 1" with lines,   \
+     "rl_256min.wcoag.txt"	using ($4):($13/($10+$11+$12+$13+$14)) title "C* = 100" with lines, \
+     "rl_256min.wcoag.txt"	using ($4):($14/($10+$11+$12+$13+$14)) title "C* = 1000" with lines
+
+#plot "rl_256min.wcoag.txt"	using 4:11 title "C* = 0.1" with lines, \
+#     "rl_256min.wcoag.txt"	using 4:12 title "C* = 1" with lines, \
+#     "rl_256min.wcoag.txt"	using 4:13 title "C* = 100" with lines, \
+#     "rl_256min.wcoag.txt"	using 4:14 title "C* = 1000" with lines
+
+
+# Lower Right
+set size 0.5, 0.5
+set origin 0.5, 0.0
+# 512 min
+set title "time = 512 min (Model: Raoult's Law)"
+plot "rl_512min.wcoag.txt"	using ($4):($11/($10+$11+$12+$13+$14)) title "C* = 0.1" with lines, \
+     "rl_512min.wcoag.txt"	using ($4):($12/($10+$11+$12+$13+$14)) title "C* = 1" with lines,   \
+     "rl_512min.wcoag.txt"	using ($4):($13/($10+$11+$12+$13+$14)) title "C* = 100" with lines, \
+     "rl_512min.wcoag.txt"	using ($4):($14/($10+$11+$12+$13+$14)) title "C* = 1000" with lines
+
+
+#plot "rl_1024min.wcoag.txt" using 4:11 title "C* = 0.1" with lines, \
+#     "rl_1024min.wcoag.txt" using 4:12 title "C* = 1" with lines, \
+#     "rl_1024min.wcoag.txt" using 4:13 title "C* = 100" with lines, \
+#     "rl_1024min.wcoag.txt" using 4:14 title "C* = 1000" with lines
+
+
+
+unset multiplot

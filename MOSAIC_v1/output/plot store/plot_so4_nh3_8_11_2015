@@ -1,0 +1,28 @@
+set size 1, 1
+set origin 0,0
+
+
+set autoscale
+unset log
+unset label
+unset title
+set xtic auto
+set ytic auto
+
+set xlabel "Dp (nm)"
+set ylabel "Number (1/cc)"
+
+set xrange [10:1000]
+set yrange [0:0.2]
+
+set logscale x
+
+# Number
+set title "8/11/2015"
+set xlabel "Dp (nm)"
+set ylabel "dN/dlogDp (cm-3)"
+plot "soa.aer.txt" using 2:6 title 'sulfate' with lines 1 , \
+     "soa.aer.txt" using 2:7 title 'ammonium' with lines 3
+ #    "soa.aer.txt" using 2:8 title 'obs. initial' with points 3
+
+

@@ -1,0 +1,10 @@
+# gg05.runaa
+set verbose
+
+gg05aa.run
+
+gg05bb.run
+
+gg05dd.run
+
+unset verbose

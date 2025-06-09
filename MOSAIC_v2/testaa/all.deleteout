@@ -1,0 +1,22 @@
+#!/bin/csh
+set verbose
+
+/bin/rm  case*fullout.txt
+
+/bin/rm  wet*fullout.txt
+
+/bin/rm  sectw*fullout.txt  sectd*fullout.txt
+
+/bin/rm  fort.172w*  fort.172d*
+
+/bin/rm  gg05*fullout.txt
+
+/bin/rm  gg05*bm1??
+
+ls fort.17? fort.18? fort.19?
+echo "Delete fort.17? fort.18? and fort.19? files?  (y/n)"
+set yesno = $<
+if ($yesno == "y") /bin/rm fort.17? fort.18? fort.19?
+
+unset verbose
+

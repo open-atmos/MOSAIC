@@ -1,0 +1,145 @@
+# junkrunsectaa
+set verbose
+
+
+#sectd2.inp
+#sectd3.inp
+#sectw1.inp
+#sectw1b.inp
+#sectw1c.inp
+#sectw1d.inp
+#sectw1e.inp
+#sectw2.inp
+#sectw2c.inp
+#sectw3.inp
+#sectw3c.inp
+#sectw4.inp
+
+
+/bin/rm  fort.172  fort.172d2  sectd2.fullout.txt
+mosaic.x << eoi
+sectd2.inp
+eoi
+/bin/mv fort.172 fort.172d2
+
+
+/bin/rm  fort.172  fort.172d3  sectd3.fullout.txt
+mosaic.x << eoi
+sectd3.inp
+eoi
+/bin/mv fort.172 fort.172d3
+
+
+/bin/rm  fort.172  fort.172w1  sectw1.fullout.txt
+mosaic.x << eoi
+sectw1.inp
+eoi
+/bin/mv fort.172 fort.172w1
+
+
+/bin/rm  fort.172  fort.172w1b  sectw1b.fullout.txt
+mosaic.x << eoi
+sectw1b.inp
+eoi
+/bin/mv fort.172 fort.172w1b
+
+
+/bin/rm  fort.172  fort.172w1c  sectw1c.fullout.txt
+mosaic.x << eoi
+sectw1c.inp
+eoi
+/bin/mv fort.172 fort.172w1c
+
+
+/bin/rm  fort.172  fort.172w1d  sectw1d.fullout.txt
+mosaic.x << eoi
+sectw1d.inp
+eoi
+/bin/mv fort.172 fort.172w1d
+
+
+/bin/rm  fort.172  fort.172w1e  sectw1e.fullout.txt
+mosaic.x << eoi
+sectw1e.inp
+eoi
+/bin/mv fort.172 fort.172w1e
+
+
+/bin/rm  fort.172  fort.172w2  sectw2.fullout.txt
+mosaic.x << eoi
+sectw2.inp
+eoi
+/bin/mv fort.172 fort.172w2
+
+
+/bin/rm  fort.172  fort.172w2c  sectw2c.fullout.txt
+mosaic.x << eoi
+sectw2c.inp
+eoi
+/bin/mv fort.172 fort.172w2c
+
+
+/bin/rm  fort.172  fort.172w3  sectw3.fullout.txt
+mosaic.x << eoi
+sectw3.inp
+eoi
+/bin/mv fort.172 fort.172w3
+
+
+/bin/rm  fort.172  fort.172w3c  sectw3c.fullout.txt
+mosaic.x << eoi
+sectw3c.inp
+eoi
+/bin/mv fort.172 fort.172w3c
+
+
+/bin/rm  fort.172  fort.172w4  sectw4.fullout.txt
+mosaic.x << eoi
+sectw4.inp
+eoi
+/bin/mv fort.172 fort.172w4
+
+
+/bin/rm  fort.172  fort.172w5  sectw5.fullout.txt
+mosaic.x << eoi
+sectw5.inp
+eoi
+/bin/mv fort.172 fort.172w5
+
+
+/bin/rm  fort.172  fort.172w6  sectw6.fullout.txt
+mosaic.x << eoi
+sectw6.inp
+eoi
+/bin/mv fort.172 fort.172w6
+
+
+/bin/rm  fort.172  fort.172w6b  sectw6b.fullout.txt
+mosaic.x << eoi
+sectw6b.inp
+eoi
+/bin/mv fort.172 fort.172w6b
+
+
+/bin/rm  fort.172  fort.172w6c  sectw6c.fullout.txt
+mosaic.x << eoi
+sectw6c.inp
+eoi
+/bin/mv fort.172 fort.172w6c
+
+
+/bin/rm  fort.172  fort.172w6d  sectw6d.fullout.txt
+mosaic.x << eoi
+sectw6d.inp
+eoi
+/bin/mv fort.172 fort.172w6d
+
+
+/bin/rm  fort.172  fort.172w6e  sectw6e.fullout.txt
+mosaic.x << eoi
+sectw6e.inp
+eoi
+/bin/mv fort.172 fort.172w6e
+
+
+unset verbose

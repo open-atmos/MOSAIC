@@ -1,0 +1,37 @@
+set size 1, 1
+set origin 0,0
+set multiplot
+
+
+set autoscale
+unset log
+unset label
+unset title
+set xtic auto
+set ytic auto
+
+set logscale x
+
+# Top: Number
+set size 1, 0.5
+set origin 0.0, 0.5
+set xrange [1:1000]
+set yrange [0:50000]
+set xlabel "Dp (nm)"
+set ylabel "dN/dlogDp (cm-3)"
+set title "Number Size Distribution"
+plot "obs/obs_num_size_dist.txt" using 1:5 title 'observed' with points , \
+     "soa.aer.txt" using 2:3 title 'model' with lines
+
+# Bottom: Volume
+set size 1, 0.5
+set origin 0.0, 0.0
+set xrange [1:1000]
+set yrange [0:3.5]
+set xlabel "Dp (nm)"
+set ylabel "dV/dlogDp (um3 cm-3)"
+set title "Volume Size Distribution"
+plot "obs/obs_vol_size_dist.txt" using 1:5 title 'observed' with points , \
+     "soa.aer.txt" using 2:4 title 'model' with lines
+
+unset multiplot

@@ -1,0 +1,19 @@
+# rhupdn2.run
+
+set verbose
+
+mosaic.x << eoi
+rhupdn2.inp
+eoi
+
+grep -v a001 rhupdn2.fullout.txt | grep -v a002 | grep -v a004 >!  rhupdn2.tempout.txt
+
+head -25 rhupdn2.tempout.txt >! rhupdn2.bin3out.txt
+
+tail --lines=+25 rhupdn2.tempout.txt \
+| grep -v Cl  | grep -v num | grep -v dpdry | grep -v sigmag | grep -v Na  | grep -v OIN \
+>> rhupdn2.bin3out.txt
+
+/bin/rm rhupdn2.tempout.txt
+
+unset verbose

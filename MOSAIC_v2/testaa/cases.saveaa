@@ -1,0 +1,17 @@
+# cases.save
+set verbose
+
+ls -d  cases.sv*
+
+echo "Enter save directory name:"
+set savedir = $<
+
+mkdir  $savedir
+
+/bin/cp -p  case?.inp  case1?.inp  wet2j?.inp  $savedir
+
+/bin/cp -p  case?.fullout.txt  case??.fullout.txt  wet2j?.fullout.txt  $savedir
+
+ls -R  $savedir
+
+unset verbose

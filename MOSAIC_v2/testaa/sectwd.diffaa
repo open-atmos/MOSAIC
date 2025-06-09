@@ -1,0 +1,147 @@
+# sectwd.diffaa
+
+set base_dir = $cwd
+
+#set this_dir = '/files0/d37080/mosaic_box/mos41b_re7'
+ set this_dir = $cwd
+
+#set otherdir = '/files0/d37080/mosaic_box/mos41c_re1/testaa/sectwd.sv27'
+#set otherdir = '/lustre/backedup/d37080/mosaic_box/fairf/mos41c_re3/testaa/sectwd.sv27'
+ set otherdir = '/lustre/backedup/d37080/mosaic_box/fairf/mos41c_re3/testaa/sectwd.sv28'
+
+set iflagaa = 1
+
+set show_diffs_optaa = 1
+
+
+echo ' '
+echo 'comparing output files in'
+echo '    this_dir =' $this_dir
+if (! -e $this_dir) then
+    echo '*** this_dir is not a directory ***'
+    exit
+endif
+echo '    otherdir =' $otherdir
+if (! -e $otherdir) then
+    echo '*** otherdir is not a directory ***'
+    exit
+endif
+echo ' '
+
+
+
+#------------------------------------------------------------
+
+if ($iflagaa == 1 || $iflagaa == 3) then
+
+cd $this_dir
+
+foreach fname (  \
+sectd2.fullout.txt   \
+sectd3.fullout.txt   \
+sectw1.fullout.txt   \
+sectw1b.fullout.txt  \
+sectw1c.fullout.txt  \
+sectw1d.fullout.txt  \
+sectw1e.fullout.txt  \
+sectw2.fullout.txt   \
+#sectw2b.fullout.txt  \
+sectw2c.fullout.txt  \
+sectw3.fullout.txt   \
+sectw3c.fullout.txt  \
+sectw4.fullout.txt   \
+sectw5.fullout.txt   \
+sectw6.fullout.txt   \
+sectw6b.fullout.txt  \
+sectw6c.fullout.txt  \
+sectw6d.fullout.txt  \
+sectw6e.fullout.txt  \
+fort.172d2   \
+fort.172d3   \
+fort.172w1   \
+fort.172w1b  \
+fort.172w1c  \
+fort.172w1d  \
+fort.172w1e  \
+fort.172w2   \
+fort.172w2c  \
+fort.172w3   \
+fort.172w3c  \
+fort.172w4   \
+fort.172w5   \
+fort.172w6   \
+fort.172w6b  \
+fort.172w6c  \
+fort.172w6d  \
+fort.172w6e  \
+)
+
+if ( -e $this_dir/$fname  &&  -e $otherdir/$fname ) then
+    diff  $this_dir/$fname  $otherdir/$fname  >  /dev/null
+    if ($status == 0) then
+        echo '           match ' $fname
+    else
+        echo '      **** DIFFS ' $fname
+        if ($show_diffs_optaa == 1) then
+           diff  $this_dir/$fname  $otherdir/$fname  |  wc
+        else if ($show_diffs_optaa == 2) then
+           diff  $this_dir/$fname  $otherdir/$fname  |  wc
+           diff  $this_dir/$fname  $otherdir/$fname
+        endif
+    endif
+else if ( -e $this_dir/$fname ) then
+    echo 'missing otherdir ' $fname
+else if ( -e $otherdir/$fname ) then
+    echo 'missing this_dir ' $fname
+else
+    echo 'missing both_dir ' $fname
+endif
+
+end
+
+
+cd $base_dir
+
+endif
+echo ' '
+
+
+#------------------------------------------------------------
+
+if ($iflagaa == 2 || $iflagaa == 3) then
+
+cd $otherdir
+
+foreach fname (  \
+aerosol/*.f90  \
+cloud/*.f90  \
+datamodules/*.f90  \
+gas/*.f90  \
+main/*.f90  \
+solver/*.f90  \
+)
+
+if ( -e $this_dir/$fname  &&  -e $otherdir/$fname ) then
+    diff  $this_dir/$fname  $otherdir/$fname  >  /dev/null
+    if ($status == 0) then
+        echo '           match ' $fname
+    else
+        echo '      **** DIFFS ' $fname
+    endif
+else if ( -e $this_dir/$fname ) then
+    echo 'missing otherdir ' $fname
+else if ( -e $otherdir/$fname ) then
+    echo 'missing this_dir ' $fname
+else
+    echo 'missing both_dir ' $fname
+endif
+
+end
+
+
+cd $base_dir
+
+endif
+
+echo ' '
+
