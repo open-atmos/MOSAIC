@@ -31,10 +31,10 @@ cpp -P -traditional-cpp ../main/module_mosaic_support.f90 module_mosaic_support.
 
 cp -p  ../Makefile  .
 
-make mosaic.x  COMP=gfortran  FLAGS="$flags" --always-make
+make mosaic.x  COMP=$compiler  FLAGS="$flags" --always-make
 
 
-make libmosaic.a COMP=gfortran  FLAGS="$flags" --always-make
+make libmosaic.a COMP=$compiler  FLAGS="$flags" --always-make
 #/bin/mv  mosaic.x  ..
 
 cd  ..
