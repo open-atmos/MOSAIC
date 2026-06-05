@@ -1,0 +1,11 @@
+# Build staging / output directory (populated by compile.sh; not source)
+compile/
+
+# Build artifacts
+*.o
+*.mod
+*.a
+*.x
+
+# Stray Fortran unit output from box-model runs
+fort.*
