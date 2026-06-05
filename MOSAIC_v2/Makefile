@@ -5,17 +5,24 @@
 #######################################################################
 
 
- COMPILER = $(COMP)
- foptions = $(FLAGS)
- COMP_FLAGS_FREE  = -Mfree
- COMP_FLAGS_FIXED =
+COMPILER = $(COMP)
+foptions = $(FLAGS)
+COMP_FLAGS_FREE  = #-Mfree
+COMP_FLAGS_FIXED =
 
 RM = /bin/rm
+
+AR = ar
+ARFLAGS = rc
+
+RANLIB = ranlib
+RANLIBFLAGS =
 
 
 #
 # Suffix rules
 #
+.SUFFIXES :
 .SUFFIXES : .f90 .f .o .x
 
 .f90.o:
@@ -154,6 +161,7 @@ MAIN =  \
 	mosaic_allocate_memory.o \
 	module_mosaic_support.o
 
+module_data_mosaic_kind.o:
 
 module_data_mosaic_constants.o:   module_data_mosaic_kind.o
 
@@ -221,6 +229,9 @@ $(MAIN):  $(DATAMODU)
 mosaic.x:  $(DATAMODU)  $(PMCMOS)  $(AEROSOL)  $(CLOUD)  $(GAS)  $(SOLVER)  $(MAIN)
 	$(COMPILER)  $(foptions)  -o $@  $(DATAMODU)  $(PMCMOS)  $(AEROSOL)  $(CLOUD)  $(GAS)  $(SOLVER)  $(MAIN)
 
+libmosaic.a: $(DATAMODU)  $(PMCMOS)  $(AEROSOL)  $(CLOUD)  $(GAS)  $(SOLVER)  $(MAIN)
+	$(AR) $(ARFLAGS) $@ $(DATAMODU)  $(PMCMOS)  $(AEROSOL)  $(CLOUD)  $(GAS)  $(SOLVER)  $(MAIN)
+	$(RANLIB) $(RANLIBFLAGS) $@
 
 clean:
 	$(RM)  mosaic.x  *.o  *.mod

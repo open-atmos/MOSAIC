@@ -2,15 +2,17 @@
 # compile.sh
 set verbose
 
- set compiler = pgf90
+ set compiler=gfortran 
  if ($compiler == pgf90) then
     set flags = "-g -C -byteswapio -Ktrap=fp -O0"
+ else if ($compiler == gfortran) then
+    set flags = "-g -fallow-argument-mismatch"
  else
     echo "*** bad compiler = " $compiler
     exit
  endif
 
-/bin/rm mosaic.x
+#/bin/rm mosaic.x
 
 cd  compile
 /bin/rm  *.f90  Makefile*
@@ -25,13 +27,15 @@ cp -p  ../cloud/*.f90  .
 #BSINGH mosaic_support.f90 has to go through C pre-processor (cpp)
 /bin/rm module_mosaic_support.f90
 #cpp ../main/module_mosaic_support.f90 module_mosaic_support.f90
-cpp -P -I- -traditional-cpp ../main/module_mosaic_support.f90 module_mosaic_support.f90
+cpp -P -traditional-cpp ../main/module_mosaic_support.f90 module_mosaic_support.f90
 
 cp -p  ../Makefile  .
 
-make  mosaic.x  COMP=$compiler  FLAGS="$flags"
+make mosaic.x  COMP=gfortran  FLAGS="$flags" --always-make
 
-/bin/mv  mosaic.x  ..
+
+make libmosaic.a COMP=gfortran  FLAGS="$flags" --always-make
+#/bin/mv  mosaic.x  ..
 
 cd  ..
 
