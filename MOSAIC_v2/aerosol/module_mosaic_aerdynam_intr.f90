@@ -159,6 +159,7 @@
        jhyst_lo, jhyst_up, jhyst_undefined,                                      &
        mhyst_method, mhyst_force_lo, mhyst_force_up, &
        mhyst_uporlo_jhyst, mhyst_uporlo_waterhyst, &
+       msectional, msize_framework, &
        mmovesect_flag1, mw_aer_mac, &
        naer, naercomp, nbin_a, nbin_a_max, &
        all_solid, all_liquid, mixed, no_aerosol
@@ -249,8 +250,10 @@
     end do
 
     do ibin = 1, nbin_a
-       isize = isize_of_ibin(ibin)
-       itype = itype_of_ibin(ibin)
+       if (msize_framework == msectional) then
+          isize = isize_of_ibin(ibin)
+          itype = itype_of_ibin(ibin)
+       end if
        noffset = ngas_max + (ibin-1)*naer_tot
 
        ! rbox may or may not be able to hold dp_dry_a and sigma_g
@@ -302,8 +305,10 @@
     end do
 
     do ibin = 1, nbin_a
-       isize = isize_of_ibin(ibin)
-       itype = itype_of_ibin(ibin)
+       if (msize_framework == msectional) then
+          isize = isize_of_ibin(ibin)
+          itype = itype_of_ibin(ibin)
+       end if
        noffset = ngas_max + (ibin-1)*naer_tot
 
        cnn(kdpdry_a +noffset) = dp_dry_a(ibin)/conv_diam
