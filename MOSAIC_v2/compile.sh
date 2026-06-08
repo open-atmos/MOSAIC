@@ -43,6 +43,11 @@ make mosaic.x  COMP=$compiler  FLAGS="$flags" --always-make
 make libmosaic.a COMP=$compiler  FLAGS="$flags" --always-make
 #/bin/mv  mosaic.x  ..
 
+# Export build for linking against MOSAIC (e.g. PartMC)
+mkdir -p ../include ../lib
+cp -p *.mod          ../include/
+cp -p libmosaic.a    ../lib/
+
 cd  ..
 
 unset verbose
