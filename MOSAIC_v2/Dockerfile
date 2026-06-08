@@ -14,6 +14,7 @@ RUN dnf -y update \
         make \
         gcc \
         gcc-gfortran \
+        tcsh \
     && dnf clean all
 
 # NOTE: see .dockerignore for which files/directories are copied.
@@ -21,23 +22,11 @@ COPY . /mosaic/
 
 WORKDIR /mosaic
 
-# Stage all sources into compile/ and build mosaic.x and libmosaic.a
-# (mirrors compile.sh).
+# Build mosaic.x and libmosaic.a via the project's build script (gfortran).
+# compile.sh stages sources into compile/, which .dockerignore strips on COPY,
+# so create it first.
 RUN mkdir -p compile \
-    && cd compile \
-    && rm -f *.f90 *.f Makefile* \
-    && cp -p ../datamodules/*.f90 . \
-    && cp -p ../main/*.f90 . \
-    && cp -p ../gas/*.f90 . \
-    && cp -p ../solver/*.f . \
-    && cp -p ../aerosol/*.f90 . \
-    && cp -p ../cloud/*.f90 . \
-    && cp -p ../Makefile . \
-    # module_mosaic_support.f90 must pass through the C preprocessor first
-    && rm -f module_mosaic_support.f90 \
-    && cpp -P -traditional-cpp ../main/module_mosaic_support.f90 module_mosaic_support.f90 \
-    && make mosaic.x   COMP=gfortran FLAGS="-g -fallow-argument-mismatch" --always-make \
-    && make libmosaic.a COMP=gfortran FLAGS="-g -fallow-argument-mismatch" --always-make
+    && ./compile.sh gfortran
 
 ENV PATH="/mosaic/compile:${PATH}"
 

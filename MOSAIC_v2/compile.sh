@@ -2,7 +2,13 @@
 # compile.sh
 set verbose
 
- set compiler=gfortran 
+# Compiler can be passed as the first argument (defaults to gfortran):
+#   ./compile.sh           # uses gfortran
+#   ./compile.sh pgf90     # uses PGI
+ set compiler = gfortran
+ if ($#argv >= 1) then
+    set compiler = "$argv[1]"
+ endif
  if ($compiler == pgf90) then
     set flags = "-g -C -byteswapio -Ktrap=fp -O0"
  else if ($compiler == gfortran) then
