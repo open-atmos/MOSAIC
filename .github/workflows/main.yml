@@ -1,0 +1,15 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the MOSAIC docker image
+      run: docker build -t mosaic MOSAIC_v2
+    - name: Run a test case in the docker container
+      run: docker run --rm -w /mosaic mosaic sh -c 'echo case1.inp | mosaic.x'
