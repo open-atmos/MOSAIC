@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Build the MOSAIC docker image
       run: docker build -t mosaic MOSAIC_v2
     - name: Run a test case in the docker container
