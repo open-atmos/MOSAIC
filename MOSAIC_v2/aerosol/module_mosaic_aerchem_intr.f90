@@ -348,35 +348,30 @@
        
        !print*,'BALLI:in-map:', gas(inh3_g),cnn(knh3),conv1,knh3
        ! aerosol
-       !BSINGH - 05/28/2013(RCE updates)
-       if (m_partmc_mosaic <= 0) then
-        ! do this only for mosaic box-model (skip for partmc_mosaic)
-          !BSINGH - 05/28/2013(RCE updates ENDS)
-          do ibin = 1, nbin_a
-             
-             noffset = ngas_max + naer_tot*(ibin - 1)
-             num_a(ibin)      = rbox(noffset + knum_a)*conv_num    ! aerosol number -- rbox = #/kg,   num_a = #/cm^3
-             water_a(ibin)    = rbox(noffset + kwater_a)*conv_wat  ! aerosol water -- rbox = ug/kg,   water_a = kg/m^3
+       do ibin = 1, nbin_a
 
-             if (mhyst_method == mhyst_uporlo_waterhyst) then
-                ! in this case, rbox holds water_a_hyst
-                water_a_hyst(ibin) = rbox(noffset + kjhyst_a)*conv_wat ! rbox = ug/kg,   water_a_hyst = kg/m^3
-                ! value of jhyst_leg should not matter, so set it to undefined
-                jhyst_leg(ibin) = jhyst_undefined
-             else
-                ! in this case, use the incoming jhyst_leg value (unchanged)
-                ! also, input value of water_a_hyst should not be important, so set it to zero
-                water_a_hyst(ibin) = 0.0_r8
-             end if
+          noffset = ngas_max + naer_tot*(ibin - 1)
+          num_a(ibin)      = rbox(noffset + knum_a)*conv_num    ! aerosol number -- rbox = #/kg,   num_a = #/cm^3
+          water_a(ibin)    = rbox(noffset + kwater_a)*conv_wat  ! aerosol water -- rbox = ug/kg,   water_a = kg/m^3
 
-             do iaer = 1, naer
-                ! aerosol mass components -- rbox = ug/kg,   aer = nmol/m^3
-                !    (for oin, bc, oc, molecular weight = 1.0 so moles = grams)
-                aer(iaer,jtotal,ibin) = rbox(noffset+kwater_a+iaer)*conv_aer/mw_aer_mac(iaer)
-             enddo
-             
+          if (mhyst_method == mhyst_uporlo_waterhyst) then
+             ! in this case, rbox holds water_a_hyst
+             water_a_hyst(ibin) = rbox(noffset + kjhyst_a)*conv_wat ! rbox = ug/kg,   water_a_hyst = kg/m^3
+             ! value of jhyst_leg should not matter, so set it to undefined
+             jhyst_leg(ibin) = jhyst_undefined
+          else
+             ! in this case, use the incoming jhyst_leg value (unchanged)
+             ! also, input value of water_a_hyst should not be important, so set it to zero
+             water_a_hyst(ibin) = 0.0_r8
+          end if
+
+          do iaer = 1, naer
+             ! aerosol mass components -- rbox = ug/kg,   aer = nmol/m^3
+             !    (for oin, bc, oc, molecular weight = 1.0 so moles = grams)
+             aer(iaer,jtotal,ibin) = rbox(noffset+kwater_a+iaer)*conv_aer/mw_aer_mac(iaer)
           enddo
-        endif!BSINGH - 05/28/2013(RCE updates)
+
+       enddo
 
     else if (imap == 1) then
        ! map from mosaic aerchem working arrays (gas, aer, num_a, etc)
@@ -397,45 +392,40 @@
        rbox(klim2)   = gas(ilim2_g)*conv_gasinv
 
        ! aerosol
-       !BSINGH - 05/28/2013(RCE updates)
-       if (m_partmc_mosaic <= 0) then
-          ! do this only for mosaic box-model (skip for partmc_mosaic)
-          !BSINGH - 05/28/2013(RCE updates ENDS)
-          do ibin = 1, nbin_a
-             
-             noffset = ngas_max + naer_tot*(ibin - 1)
-             rbox(noffset + knum_a)    = num_a(ibin)*conv_numinv
-             rbox(noffset + kwater_a)  = water_a(ibin)*conv_watinv
+       do ibin = 1, nbin_a
 
-             if (mhyst_method == mhyst_uporlo_waterhyst) then
-                ! in this case, rbox holds water_a_hyst
-                if ( jaerosolstate(ibin) == all_solid  .or. &
-                     jaerosolstate(ibin) == all_liquid .or. &
-                     jaerosolstate(ibin) == mixed      ) then
-                   rbox(noffset + kjhyst_a) = water_a_hyst(ibin)*conv_watinv
-                else
-                   rbox(noffset + kjhyst_a) = 0.0_r8
-                end if
-                ! value of jhyst_leg should not matter, so leave it unchanged
+          noffset = ngas_max + naer_tot*(ibin - 1)
+          rbox(noffset + knum_a)    = num_a(ibin)*conv_numinv
+          rbox(noffset + kwater_a)  = water_a(ibin)*conv_watinv
+
+          if (mhyst_method == mhyst_uporlo_waterhyst) then
+             ! in this case, rbox holds water_a_hyst
+             if ( jaerosolstate(ibin) == all_solid  .or. &
+                  jaerosolstate(ibin) == all_liquid .or. &
+                  jaerosolstate(ibin) == mixed      ) then
+                rbox(noffset + kjhyst_a) = water_a_hyst(ibin)*conv_watinv
              else
-                ! when mhyst_method /= mhyst_uporlo_waterhyst, do nothing, 
-                ! leave both jhyst_leg and rbox unchanged
-                if ( jaerosolstate(ibin) == all_solid  .or. &
-                     jaerosolstate(ibin) == all_liquid .or. &
-                     jaerosolstate(ibin) == mixed      ) then
-                   continue
-!                  jhyst_leg(ibin) = jhyst_leg(ibin)
-                else
-                   jhyst_leg(ibin) = jhyst_undefined
-                end if
+                rbox(noffset + kjhyst_a) = 0.0_r8
              end if
-             
-             do iaer = 1, naer
-                rbox(noffset+kwater_a+iaer) = aer(iaer,jtotal,ibin)*conv_aerinv*mw_aer_mac(iaer)
-             enddo
-             
+             ! value of jhyst_leg should not matter, so leave it unchanged
+          else
+             ! when mhyst_method /= mhyst_uporlo_waterhyst, do nothing,
+             ! leave both jhyst_leg and rbox unchanged
+             if ( jaerosolstate(ibin) == all_solid  .or. &
+                  jaerosolstate(ibin) == all_liquid .or. &
+                  jaerosolstate(ibin) == mixed      ) then
+                continue
+!               jhyst_leg(ibin) = jhyst_leg(ibin)
+             else
+                jhyst_leg(ibin) = jhyst_undefined
+             end if
+          end if
+
+          do iaer = 1, naer
+             rbox(noffset+kwater_a+iaer) = aer(iaer,jtotal,ibin)*conv_aerinv*mw_aer_mac(iaer)
           enddo
-       endif!BSINGH - 05/28/2013(RCE updates)
+
+       enddo
 
     endif
 
