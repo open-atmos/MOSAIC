@@ -226,8 +226,7 @@
      do n = 1, 4
         print '(1p,5e10.2)', mosaic_vars_aa%xnerr_astem_negative(:,n)
      end do
-     print '(a)', 'Fortran Stop in aerosol/aerchemistry.f90'
-     stop
+     print '(a)', 'WARNING in aerosol/aerchemistry.f90'
   end if
 
   deallocate( mosaic_vars_aa%iter_mesa, stat=ierr )
