@@ -12,7 +12,7 @@ set verbose
  if ($compiler == pgf90) then
     set flags = "-g -C -byteswapio -Ktrap=fp -O0"
  else if ($compiler == gfortran) then
-    set flags = "-g -fallow-argument-mismatch"
+    set flags = "-O2 -g -fallow-argument-mismatch"
  else
     echo "*** bad compiler = " $compiler
     exit
