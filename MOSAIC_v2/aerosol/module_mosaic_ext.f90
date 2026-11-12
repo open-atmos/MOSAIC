@@ -88,8 +88,8 @@ contains
     real(r8) :: aer_H
     real(r8):: aH2O_range_bisect_toler
     real(r8) :: aH2O_a_new, aH2O_a_old, aH2O_a_oldn, aH2O_a_oldp, aH2O_a_del_state3
-    real(r8), dimension(nbin_a_max) :: DpmV
-    real(r8), dimension(nbin_a_max) :: kelvin
+    real(r8) :: DpmV
+    real(r8) :: kelvin
     real(r8) :: kelvin_old, kelvin_oldn, kelvin_oldp
     real(r8) :: kelvin_toler
     real(r8) :: rel_err, rel_err_old, rel_err_old2, rel_err_oldn, rel_err_oldp
@@ -104,7 +104,7 @@ contains
        ibin, jhyst_leg(ibin), jaerosolstate(ibin), -1, 0, aH2O, aH2O_a(ibin)
     !aH2O = RH_pc*0.01 !**BALLI, this is already done in init subr
     aH2O_a(ibin) = aH2O
-    kelvin(ibin) = 1.0
+    kelvin = 1.0
     do iv = 1, ngas_aerchtot
        kel(iv,ibin) = 1.0
     enddo
@@ -205,11 +205,11 @@ contains
  
     call calculate_kelvin(ibin,num_a,vol_wet_a,aH2O_a,DpmV,kelvin,sigma_soln,T_K,  &
          sigma_water)
-    !      kelvin(ibin) = 1.0
-    kelvin(ibin) = max( kelvin(ibin), 1.0_r8 )
-    if (water_a(ibin) <= 0.0_r8) kelvin(ibin) = 1.0_r8
+    !      kelvin = 1.0
+    kelvin = max( kelvin, 1.0_r8 )
+    if (water_a(ibin) <= 0.0_r8) kelvin = 1.0_r8
 
-    aH2O_a_new = aH2O/kelvin(ibin)
+    aH2O_a_new = aH2O/kelvin
 
 !   if(RH_pc .le. 97.0)then
 !     rel_err = abs( (aH2O_a_new - aH2O_a(ibin))/aH2O_a(ibin))
@@ -223,11 +223,11 @@ contains
 ! the above rel_err involve differences between current and previous
 !    iteration values, and is not suitable for bisection
 ! this rel_err below uses error from the exact solution, and is suitable for bisection
-    rel_err = (aH2O_a(ibin)*kelvin(ibin) - aH2O) / max( aH2O, 0.01_r8 )
+    rel_err = (aH2O_a(ibin)*kelvin - aH2O) / max( aH2O, 0.01_r8 )
 
     if (aer_pha_sta_diagaa >= 10) &
     write(lunerr,'(a,2i5, 1p,e10.2, 0p,f14.10, 2x,2f14.10, 2x,1p,2e18.10)') &
-       'mosaic aer_pha_sta iter_kelvin', iter_kelvin_state, iter_kelvin, rel_err, kelvin(ibin), &
+       'mosaic aer_pha_sta iter_kelvin', iter_kelvin_state, iter_kelvin, rel_err, kelvin, &
        aH2O_a(ibin), aH2O_a_new, water_a_old, water_a(ibin)
 
     if (abs(rel_err) <= kelvin_toler) then
@@ -267,7 +267,7 @@ contains
        else
           ! save current values to old then do next iteration
           aH2O_a_old = aH2O_a(ibin)
-          kelvin_old = kelvin(ibin)
+          kelvin_old = kelvin
           rel_err_old2 = rel_err_old
           rel_err_old = rel_err
           water_a_old  = water_a(ibin)
@@ -306,10 +306,10 @@ contains
        ! current aH2O_a will work as one of the two initial bisection points
        ! (the one with a positive error)
        aH2O_a_oldp = aH2O_a(ibin)
-       kelvin_oldp = kelvin(ibin)
+       kelvin_oldp = kelvin
        rel_err_oldp = rel_err
        water_a_oldp  = water_a(ibin)
-       aH2O_a_new = min( aH2O/kelvin(ibin), 0.999999_r8 )   ! is this needed, or should it be 1.0, or ???
+       aH2O_a_new = min( aH2O/kelvin, 0.999999_r8 )   ! is this needed, or should it be 1.0, or ???
        iter_kelvin_state = 3
        goto 10
     end if
@@ -321,7 +321,7 @@ contains
           ! current aH2O_a will work as one of the two initial bisection points
           ! (the one with a negative error)
           aH2O_a_oldn = aH2O_a(ibin)
-          kelvin_oldn = kelvin(ibin)
+          kelvin_oldn = kelvin
           rel_err_oldn = rel_err
           water_a_oldn  = water_a(ibin)
           aH2O_a_new = 0.5_r8*(aH2O_a_oldn + aH2O_a_oldp)
@@ -343,7 +343,7 @@ contains
              ! then calc aH2O_a_new = aH2O_a(ibin) - aH2O_a_del_state3
              ! which will hopefully have a negative error
              aH2O_a_oldp = aH2O_a(ibin)
-             kelvin_oldp = kelvin(ibin)
+             kelvin_oldp = kelvin
              rel_err_oldp = rel_err
              water_a_oldp  = water_a(ibin)
              aH2O_a_new = aH2O_a(ibin) - aH2O_a_del_state3
@@ -391,7 +391,7 @@ contains
           else
              ! current aH2O_a has positive error and replaces the the old positive-error point
              aH2O_a_oldp = aH2O_a(ibin)
-             kelvin_oldp = kelvin(ibin)
+             kelvin_oldp = kelvin
              rel_err_oldp = rel_err
              water_a_oldp  = water_a(ibin)
           end if
@@ -408,7 +408,7 @@ contains
           else
              ! current aH2O_a has negative error and replaces the the old negative-error point
              aH2O_a_oldn = aH2O_a(ibin)
-             kelvin_oldn = kelvin(ibin)
+             kelvin_oldn = kelvin
              rel_err_oldn = rel_err
              water_a_oldn  = water_a(ibin)
           end if
@@ -445,7 +445,7 @@ contains
     ! now compute kelvin effect terms for condensing species (nh3, hno3, and hcl)
     do iv = 1,  ngas_aerchtot
        term = 4.*sigma_soln(ibin)*partial_molar_vol(iv)/   &
-            (8.3144e7*T_K*DpmV(ibin))
+            (8.3144e7*T_K*DpmV)
        kel(iv,ibin) = 1. + term*(1. + 0.5*term*(1. + term/3.))
     enddo
 
@@ -741,14 +741,15 @@ contains
     real(r8), intent(in) :: T_K,sigma_water
     real(r8), intent(in), dimension(nbin_a_max) :: num_a
     real(r8), intent(inout), dimension(nbin_a_max) :: sigma_soln
-    real(r8), intent(inout), dimension(nbin_a_max) ::vol_wet_a,aH2O_a,DpmV,kelvin
+    real(r8), intent(inout), dimension(nbin_a_max) ::vol_wet_a,aH2O_a
+    real(r8), intent(inout) :: DpmV,kelvin
     ! local variables
     integer je
     real(r8) :: term, sum_dum
-    real(r8), dimension(nbin_a_max) :: volume_a
+    real(r8) :: volume_a
 
-    volume_a(ibin) = vol_wet_a(ibin)                                ! [cc/cc(air)]
-    DpmV(ibin)=(6.*volume_a(ibin)/(num_a(ibin)*pi))**(1./3.)        ! [cm]
+    volume_a = vol_wet_a(ibin)                                ! [cc/cc(air)]
+    DpmV=(6.*volume_a/(num_a(ibin)*pi))**(1./3.)        ! [cm]
 
 
     ! Li and Lu (2001) surface tension model:
@@ -766,9 +767,9 @@ contains
 
 
 
-    term = 72.*sigma_soln(ibin)/(8.3144e7*T_K*DpmV(ibin))           ! [-]
-!    kelvin(ibin) = exp(term)
-    kelvin(ibin) = 1. + term*(1. + 0.5*term*(1. + term/3.))
+    term = 72.*sigma_soln(ibin)/(8.3144e7*T_K*DpmV)           ! [-]
+!    kelvin = exp(term)
+    kelvin = 1. + term*(1. + 0.5*term*(1. + term/3.))
 
 
     return
@@ -1131,7 +1132,7 @@ contains
     real(r8) :: phi_prod, alpha_fac, sum_dum
     real(r8) :: aer_H,hsalt_max
     real(r8), dimension(nelectrolyte) :: eleliquid
-    real(r8), dimension(nbin_a_max) :: mass_dry_salt
+    real(r8) :: mass_dry_salt
     real(r8), dimension(nsalt) :: phi_salt,flux_sl,phi_bar,alpha_salt
     real(r8), dimension(nsalt) :: sat_ratio,hsalt
   
@@ -1200,9 +1201,9 @@ contains
     mass_dry_a(ibin) = mass_dry_a(ibin)*1.e-15                      ! [g/cc(air)]
     vol_dry_a(ibin) = vol_dry_a(ibin)*1.e-15                                ! [cc(aer)/cc(air)]
 
-    mass_dry_salt(ibin) = 0.0               ! soluble salts only
+    mass_dry_salt = 0.0               ! soluble salts only
     do je = 1, nsalt
-       mass_dry_salt(ibin) = mass_dry_salt(ibin) +   &
+       mass_dry_salt = mass_dry_salt +   &
             electrolyte(je,jtotal,ibin)*mw_electrolyte(je)*1.e-15   ! g/cc(air)
     enddo
 
@@ -2182,7 +2183,7 @@ contains
     real(r8), intent(in) :: rtol_mesa
     real(r8), intent(inout), dimension(nsalt) :: flux_sl,phi_salt
     real(r8), intent(in),    dimension(nbin_a_max) :: mass_dry_a
-    real(r8), intent(inout), dimension(nbin_a_max) :: mass_dry_salt
+    real(r8), intent(inout) :: mass_dry_salt
     real(r8), intent(in), dimension(nelectrolyte) :: mw_electrolyte
     real(r8), intent(in), dimension(naer) :: mw_aer_mac
     real(r8), intent(inout), dimension(naer,3,nbin_a_max) :: aer
@@ -2216,10 +2217,10 @@ contains
     !      frac_solid = mass_solid/mass_dry_a(ibin)
 
 
-    if(mass_dry_salt(ibin) .le. 0.0)then
+    if(mass_dry_salt .le. 0.0)then
       frac_solid = 0.0
     else
-      frac_solid = mass_solid_salt/mass_dry_salt(ibin)
+      frac_solid = mass_solid_salt/mass_dry_salt
     endif
 
 
