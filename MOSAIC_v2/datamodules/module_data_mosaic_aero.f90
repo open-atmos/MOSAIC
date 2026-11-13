@@ -76,6 +76,12 @@ module module_data_mosaic_aero
   ! mineral dust is mostly externally mixed, so a minor fraction of mineral dust species
   !   will most likely reside in a minor fraction of the particles of the bin,
   !   and should not control the bin aerosol water.  (value = 0.0 in previous versions of mosaic)
+  real(r8), parameter :: xhyst_up_crustal_thresh_partmc = 1.0_r8
+  ! the same threshold when MOSAIC is coupled to PartMC (m_partmc_mosaic > 0):
+  !   there each bin is one particle, so the reason above (dust externally
+  !   mixed within a bin) does not apply, and a particle whose salts have all
+  !   dissolved goes to the upper hysteresis curve whatever its crustal
+  !   fraction (1.0 = no restriction), like any other particle.
 
   integer, parameter :: no_aerosol = 0	! flag
   integer, parameter :: all_solid  = 1 ! flag

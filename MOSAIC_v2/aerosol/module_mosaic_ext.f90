@@ -2173,7 +2173,9 @@ contains
 
     use module_data_mosaic_aero, only: r8,nbin_a_max,naer,nelectrolyte,nsalt,      &!Parameters
          jsolid, mYES, xhyst_up_crustal_thresh,                                    &!Parameters
-         mno,ioin_a,jcaso4,jcaco3         !TBD
+         mno,ioin_a,jcaso4,jcaco3,                                                 &!TBD
+         xhyst_up_crustal_thresh_partmc
+    use module_data_mosaic_main, only: m_partmc_mosaic
 
     implicit none
 
@@ -2191,7 +2193,7 @@ contains
     ! local variables
     integer je, js, iaer
     real(r8) :: mass_solid, mass_solid_salt,frac_solid, XT, H_ion,   &
-         crustal_solids, sumflux
+         crustal_solids, sumflux, crustal_thresh
 
 
     idissolved = mno             ! default = not completely dissolved
@@ -2256,9 +2258,16 @@ contains
                      electrolyte(jcaso4,jsolid,ibin)*mw_electrolyte(jcaso4) +  &
                      aer(ioin_a,jsolid,ibin)*mw_aer_mac(ioin_a)
 
+    ! PartMC: each bin is one particle (see module_data_mosaic_aero)
+    if (m_partmc_mosaic > 0) then
+       crustal_thresh = xhyst_up_crustal_thresh_partmc
+    else
+       crustal_thresh = xhyst_up_crustal_thresh
+    endif
+
 !   if(sumflux .eq. 0.0 .and. crustal_solids .eq. 0.0)then
     if ( sumflux .eq. 0.0 .and. &
-         crustal_solids .le. xhyst_up_crustal_thresh*(mass_dry_a(ibin)*1.0e15) ) then
+         crustal_solids .le. crustal_thresh*(mass_dry_a(ibin)*1.0e15) ) then
        ! crustal_solids is ng/m^3, mass_dry_a is g/cm^3
        idissolved = myes
     endif
