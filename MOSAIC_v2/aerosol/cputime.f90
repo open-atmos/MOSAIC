@@ -68,11 +68,11 @@
 
 !   local variables
 	real(r4) :: dum, tcpu_2d(2)
-	real(r4) :: etime
-	external etime
+!  real(r4) :: etime
+!	external etime
 
-	dum = etime(tcpu_2d)
-	tcpu = tcpu_2d(1) + tcpu_2d(2)
+	call cpu_time(tcpu)
+!	tcpu = tcpu_2d(1) + tcpu_2d(2)
 
 	return
 	end subroutine cpusecnd

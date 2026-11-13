@@ -1,0 +1,7 @@
+# Don't copy build artifacts / editor backups into the image.
+*~
+mosaic.x
+compile/*.o
+compile/*.mod
+compile/*.f90
+compile/*.f

@@ -3823,7 +3823,7 @@ subroutine ASTEM_flux_soa(ibin,sfc_a,Heff,integrate,aer,gas,sat_soa,ieqblm_soa)	
   ! local variables
   integer iv, jp
   real(r8) :: dum, sum_dum, sum_soa, small_oc
-  real(r8), dimension(ngas_volatile,nbin_a_max) :: df_gas_o,flux_o,phi_volatile_o
+  real(r8), dimension(ngas_volatile,ibin:ibin) :: df_gas_o,flux_o,phi_volatile_o  ! only column ibin is used
 
   small_oc  = 1.e-15		! ng/m^3
   

@@ -7,6 +7,7 @@ module module_pmcmos_init
 
   implicit none
 
+  integer, parameter :: maxlnlen=2000
 
 contains
 
@@ -471,11 +472,11 @@ subroutine parselnb( ast, ntok, itype, ival, xval,   &
   !     isdigit, issign, isperiod
   !
   !   sub arguments
-
- character*(maxlnlen) :: ast
+ integer :: maxlnlen, maxch, maxp, ntok
+ character(len=maxlnlen) :: ast
  !   ast holds input line,  bst holds token for numeric decoding
 
- integer :: maxlnlen, maxch, maxp, ntok
+! integer :: maxlnlen, maxch, maxp, ntok
  integer :: itype(maxp), ival(maxp), nchqq(maxp), ipostn(maxp)
  real(r8) :: xval(maxp)
  character(len=maxch) :: strqq(maxp)

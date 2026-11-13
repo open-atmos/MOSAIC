@@ -166,8 +166,7 @@
        ai_phase, &
        dens_aer, dens_water_aer, &
        hygro_aer, hyswptr_aer, &
-       isize_of_ibin, itype_of_ibin, &
-       massptr_aer, ncomp_aer 
+       massptr_aer, ncomp_aer
 
 
     ! subr parameters
@@ -183,7 +182,7 @@
 
 
     ! local variables
-    integer :: ibin, iphase, isize, itype, jhyst_tmp
+    integer :: ibin, iphase, jhyst_tmp
     integer :: l, ll, lunaa, mtmp, noffset
     real(r8) :: conv_diam, conv_drym, conv_gas, conv_numb, conv_watr
     real(r8) :: tmpa, tmph, tmpj, tmpr
@@ -249,8 +248,6 @@
     end do
 
     do ibin = 1, nbin_a
-       isize = isize_of_ibin(ibin)
-       itype = itype_of_ibin(ibin)
        noffset = ngas_max + (ibin-1)*naer_tot
 
        ! rbox may or may not be able to hold dp_dry_a and sigma_g
@@ -302,8 +299,6 @@
     end do
 
     do ibin = 1, nbin_a
-       isize = isize_of_ibin(ibin)
-       itype = itype_of_ibin(ibin)
        noffset = ngas_max + (ibin-1)*naer_tot
 
        cnn(kdpdry_a +noffset) = dp_dry_a(ibin)/conv_diam
