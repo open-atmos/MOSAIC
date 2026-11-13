@@ -77,6 +77,19 @@ module module_data_mosaic_aero
   !   will most likely reside in a minor fraction of the particles of the bin,
   !   and should not control the bin aerosol water.  (value = 0.0 in previous versions of mosaic)
 
+  real(r8), parameter :: xt_snap_rtol = 1.0e-9_r8
+  ! The sulfate ratio XT = (NH4 + Na + 2 Ca)/(SO4 + MSA/2) selects the
+  !   sulfate-poor (XT >= 2) or sulfate-rich (XT < 2) treatment, and XT < 1
+  !   the excess-sulfate case, in several routines.  An exactly neutral
+  !   particle (e.g. NH4 = 2 SO4) can come out a few units of roundoff on
+  !   either side of 2 after a mass <-> mole conversion, and would then take
+  !   either branch at random.  snap_XT (module_mosaic_ext) sets XT to 2 or 1
+  !   when it is within a relative xt_snap_rtol of it, so that every routine
+  !   puts such a particle in the regime it is in exactly at the boundary.
+  !   1e-9 is about 1e7 times double-precision roundoff (1.1e-16) and far
+  !   below any physically meaningful excess of cations or sulfate;
+  !   0 restores the exact comparisons.
+
   integer, parameter :: no_aerosol = 0	! flag
   integer, parameter :: all_solid  = 1 ! flag
   integer, parameter :: all_liquid = 2 ! flag

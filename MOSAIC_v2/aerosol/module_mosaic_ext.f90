@@ -803,10 +803,39 @@ contains
     else
        XT   = -1.0
     endif
+    call snap_XT(XT)   ! XT within roundoff of 2 or 1 -> 2 or 1
 
 
     return
   end subroutine calculate_XT
+
+
+
+  !***********************************************************************
+  ! sets the sulfate ratio XT to exactly 2 or 1 when it is within a relative
+  ! xt_snap_rtol (module_data_mosaic_aero) of that regime boundary, so that a
+  ! neutral (or exactly bisulfate) particle whose ratio is off by roundoff
+  ! gets the same regime in every routine that tests XT (MESA,
+  ! compute_activities, ions_to_electrolytes, MESA_estimate_eleliquid,
+  ! form_electrolytes, conform_electrolytes, and the ASTEM routines that
+  ! use their XT).  Applied wherever XT is computed from the ions.
+  !-----------------------------------------------------------------------
+  subroutine snap_XT(XT)
+    use module_data_mosaic_aero, only: r8, xt_snap_rtol
+
+    implicit none
+
+    ! subr arguments
+    real(r8), intent(inout) :: XT
+
+    if(abs(XT - 2.0_r8) .le. 2.0_r8*xt_snap_rtol)then
+       XT = 2.0_r8
+    elseif(abs(XT - 1.0_r8) .le. xt_snap_rtol)then
+       XT = 1.0_r8
+    endif
+
+    return
+  end subroutine snap_XT
 
 
 
@@ -2434,6 +2463,7 @@ contains
     else
        XT   = -1.0
     endif
+    call snap_XT(XT)   ! XT within roundoff of 2 or 1 -> 2 or 1
 
 
 
@@ -3821,6 +3851,7 @@ contains
     else
        XT   = -1.0
     endif
+    call snap_XT(XT)   ! XT within roundoff of 2 or 1 -> 2 or 1
 
 
 
@@ -5357,6 +5388,7 @@ contains
     else
        XT   = -1.0
     endif
+    call snap_XT(XT)   ! XT within roundoff of 2 or 1 -> 2 or 1
 
 
 !   if(XT .ge. 1.9999 .or. XT.lt.0.)then ! RAZ 11/10/2014
